@@ -1,0 +1,21 @@
+# Folder hasil extract sipebi
+$basePath = ""
+
+
+
+Add-Type -Path "$($basePath)\Sipebi.Core.dll"
+
+[Sipebi.Core.SipebiSettings]::InitCrypt()
+
+# Pengaturan Sipebi
+$pengaturanBytes = [System.io.File]::ReadAllBytes("$($basePath)\pengaturan.sipebi")
+$pengaturanRes = [Sipebi.Core.Cryptography]::DecryptAndDecompress($pengaturanBytes)
+
+[System.Text.Encoding]::ASCII.GetString($pengaturanRes) | Out-File -FilePath "pengaturan.sipebi.xml"
+
+# BankKata Sipebi
+$kataSipebi = [System.io.File]::ReadAllBytes("$($basePath)\kata.sipebi")
+$kataRes = [Sipebi.Core.Cryptography]::DecryptAndDecompress($kataSipebi)
+
+[System.Text.Encoding]::ASCII.GetString($kataRes) | Out-File -FilePath "kata.sipebi.xml"
+
